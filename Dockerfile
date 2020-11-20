@@ -28,6 +28,9 @@ RUN upx -q -9 /bin/vault-init
 
 
 FROM scratch
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-COPY --from=builder /bin/vault-init /bin/vault-init
+ARG uid=100
+ARG gid=1000
+
+COPY --chown=${uid}:${gid} --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --chown=${uid}:${gid} --from=builder /bin/vault-init /bin/vault-init
 CMD ["/bin/vault-init"]
